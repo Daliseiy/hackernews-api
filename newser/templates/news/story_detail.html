@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Story Detail - {{ story.title }}
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h1>Story Detail</h1>
+    <div class="card shadow rounded">
+      <div class="card-body">
+        <h5 class="card-title">{{ story.title }}</h5>
+        <p class="card-text">
+          <strong>Type:</strong> {{ story.type }}
+        </p>
+        {% if story.source %}
+          <p class="card-text">
+            <strong>Source:</strong> {{ story.source }}
+          </p>
+        {% endif %}
+        {% if story.by %}
+          <p class="card-text">
+            <strong>By:</strong> {{ story.by }}
+          </p>
+        {% endif %}
+        {% if story.time %}
+          <p class="card-text">
+            <strong>Time:</strong> {{ story.time }}
+          </p>
+        {% endif %}
+        {% if story.url %}
+          <p class="card-text">
+            <strong>URL:</strong>
+            <a href="{{ story.url }}" target="_blank">{{ story.url }}</a>
+          </p>
+        {% endif %}
+        <div id="comments-section">
+          <h2>Comments</h2>
+          <ul id="comments-list">
+            <!-- Comments will be added here dynamically -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block inline_javascript %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the comments section and list
+      const commentsSection = document.getElementById("comments-section");
+      const commentsList = document.getElementById("comments-list");
+
+      // Get the story ID from the Django template
+      const storyId = "{{ story.id }}";
+
+      // Make an API request to fetch story details
+      fetch(
+          `https://hacker-news.firebaseio.com/v0/item/${storyId}.json?print=pretty`
+        )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Story Details:", data);
+
+          if (data.kids) {
+            data.kids.forEach((commentId) => {
+              // Make API request for each comment
+              fetch(
+                  `https://hacker-news.firebaseio.com/v0/item/${commentId}.json?print=pretty`
+                )
+                .then((response) => response.json())
+                .then((commentData) => {
+                  console.log("Comment Details:", commentData);
+
+                  const commentContainer = document.createElement("li");
+                  commentContainer.classList.add("media", "mb-4");
+
+                  const commentBody = document.createElement("div");
+                  commentBody.classList.add("media-body");
+
+                  if (commentData.by) {
+                    const author = document.createElement("h5");
+                    author.classList.add("mt-0");
+                    author.textContent = commentData.by;
+                    commentBody.appendChild(author);
+                  }
+
+                  if (commentData.time) {
+                    const timestamp = document.createElement("small");
+                    timestamp.textContent = new Date(
+                      commentData.time * 1000
+                    ).toLocaleString();
+                    commentBody.appendChild(timestamp);
+                  }
+
+                  if (commentData.text) {
+                    const commentText = document.createElement("p");
+                    commentText.textContent = commentData.text;
+                    commentBody.appendChild(commentText);
+                  }
+
+                  // Append media body to the comment container
+                  commentContainer.appendChild(commentBody);
+
+                  // Append comment container to the comments list
+                  commentsList.appendChild(commentContainer);
+                });
+            });
+          } else {
+            // No comments
+            commentsList.innerHTML = "<li>No comments</li>";
+          }
+        });
+    });
+  </script>
+{% endblock inline_javascript %}
