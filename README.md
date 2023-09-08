@@ -1,86 +1,78 @@
-# newser
+I apologize for the misunderstanding. Here's the entire documentation in a single `README.md` file:
 
-A project that fetches news from hackernews
+```markdown
+# Newser Project
 
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+Newser is a project that syncs published news from Hacker News to a database every 5 minutes using celery. It provides a web interface to list the latest news, filter by type, search by text, and includes pagination. Additionally, it offers an API for listing items, adding new items to the database, and allows updates and deletions for items created in the API.
 
-## Settings
+## Getting Started
 
-Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
+These instructions will help you get the project up and running on your local development environment.
 
-## Basic Commands
+### Prerequisites
 
-### Setting Up Your Users
+Before you begin, make sure you have the following tools installed:
 
-- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+- [Docker](https://www.docker.com/)
+- [Python](https://www.python.org/downloads/) (for running management commands)
 
-- To create a **superuser account**, use this command:
+### Build the Stack
 
-      $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-### Type checks
-
-Running type checks with mypy:
-
-    $ mypy newser
-
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-#### Running tests with pytest
-
-    $ pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading).
-
-### Celery
-
-This app comes with Celery.
-
-To run a celery worker:
+Build the Docker stack, which includes Django and PostgreSQL:
 
 ```bash
-cd newser
-celery -A config.celery_app worker -l info
+docker compose -f local.yml build
 ```
 
-Please note: For Celery's import magic to work, it is important _where_ the celery commands are run. If you are in the same folder with _manage.py_, you should be right.
+You can also use `production.yml` for a production-like environment.
 
-To run [periodic tasks](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html), you'll need to start the celery beat scheduler service. You can start it as a standalone process:
+### Initialize Git and Pre-commit
+
+Initialize a Git repository and install the pre-commit hooks:
 
 ```bash
-cd newser
-celery -A config.celery_app beat
+git init
+pre-commit install
 ```
 
-or you can embed the beat service inside a worker with the `-B` option (not recommended for production use):
+### Execute Management Commands
+
+Run management commands to create and migrate the database:
 
 ```bash
-cd newser
-celery -A config.celery_app worker -B -l info
+docker compose -f local.yml run --rm django python manage.py makemigrations news
+docker compose -f local.yml run --rm django python manage.py migrate
 ```
 
-### Sentry
+### Run the Stack
 
-Sentry is an error logging aggregator service. You can sign up for a free account at <https://sentry.io/signup/?code=cookiecutter> or download and host it yourself.
-The system is set up with reasonable defaults, including 404 logging and integration with the WSGI application.
+Start the development server:
 
-You must set the DSN url in production.
+```bash
+docker compose -f local.yml up
+```
 
-## Deployment
+You can access the site at [http://localhost:8000](http://localhost:8000), and the Swagger documentation for the API at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-The following details how to deploy this application.
+## API Endpoints
 
-### Docker
+The News API provides the following endpoints:
 
-See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
+- `GET /api/stories/`: List all stories.
+- `POST /api/stories/`: Create a new story.
+- `GET /api/stories/<int:pk>/`: Retrieve a specific story.
+- `PUT /api/stories/<int:pk>/`: Update a specific story (if created by the user).
+- `DELETE /api/stories/<int:pk>/`: Delete a specific story (if created by the user).
+
+## Permissions
+
+- `IsOwnerOrReadOnly`: A custom permission class that allows owners to update and delete their own stories.
+
+## Usage
+
+Interact with the News API using the provided endpoints for listing, creating, updating, and deleting stories. Ensure proper authentication and permissions for user-owned actions.
+
+## Authors
+
+- Obakunle Oluseeye [obakunleoluseye@gmail.com]
+
