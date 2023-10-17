@@ -1,4 +1,4 @@
-I apologize for the misunderstanding. Here's the entire documentation in a single `README.md` file:
+
 
 ```markdown
 # Newser Project
