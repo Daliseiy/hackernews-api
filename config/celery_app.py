@@ -1,8 +1,7 @@
 import os
 
 from celery import Celery
-from celery.schedules import crontab
-
+ 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 
@@ -20,7 +19,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     "fetch-news-every-5-minutes": {
-        "task": "newser.news.tasks.get_news_data",
-        "schedule": crontab(minute="*/5"),  # Run the news accumulate task every 5 minutes
+        "task": "newser.dumptruck.tasks.dump_database_data",
+        "schedule": crontab(minute="*/1"),  # Run the news accumulate task every 5 minutes
     },
 }
