@@ -17,9 +17,9 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-app.conf.beat_schedule = {
-    "fetch-news-every-5-minutes": {
-        "task": "newser.dumptruck.tasks.dump_database_data",
-        "schedule": crontab(minute="*/1"),  # Run the news accumulate task every 5 minutes
-    },
-}
+# app.conf.beat_schedule = {
+#     "fetch-news-every-5-minutes": {
+#         "task": "newser.dumptruck.tasks.dump_database_data",
+#         "schedule": crontab(minute="*/1"),  # Run the news accumulate task every 5 minutes
+#     },
+# }
