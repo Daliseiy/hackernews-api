@@ -76,7 +76,8 @@ jobs:
         echo "${{ secrets.DB_ENV }}" >  .envs/.production/.postgres
         ls
         ls -R .envs
-        docker compose -f production.yml build 
+        docker compose -f production.yml build
+        docker tag trial:latest 533315383542.dkr.ecr.eu-north-1.amazonaws.com/trial:latest 
         docker push $ECR_REPOSITORY:latest
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
