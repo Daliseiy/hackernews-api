@@ -72,7 +72,9 @@ jobs:
       run: |
         echo "${{ secrets.DJANGO_ENV }}" > django.env
         echo "${{ secrets.DB_ENV }}" >  postgres.env
+        mkdir -p .envs/.production
         echo "${{ secrets.DB_ENV }}" >  .envs/.production/.postgres
+        ls
         ls -R .envs
         docker compose -f production.yml build 
         docker compose -f production.yml push
