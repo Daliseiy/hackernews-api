@@ -11,7 +11,7 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
 
-    image: newser_production_django
+    image: newser_production_django:trial
     depends_on:
       # - postgres
       - redis
