@@ -32,9 +32,9 @@ on:
 
 env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: 533315383542.dkr.ecr.eu-north-1.amazonaws.com/trial           # set this to your Amazon ECR repository name
-  ECS_SERVICE: trial-serviceprodnew                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: trial-clusterprod                 # set this to your Amazon ECS cluster name
+  ECR_REPOSITORY: 533315383542.dkr.ecr.us-east-1.amazonaws.com/trial          # set this to your Amazon ECR repository name
+  ECS_SERVICE: devservice              # set this to your Amazon ECS service name
+  ECS_CLUSTER: devcluster                # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: ./aws/task_definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: trial           # set this to the name of the container in the
@@ -73,7 +73,6 @@ jobs:
         mkdir -p .envs/.production
         echo "${{ secrets.DJANGO_ENV }}" > .envs/.production/.django
         echo "${{ secrets.DB_ENV }}" >  .envs/.production/.postgres
-        ls -a .envs/.production
         aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 533315383542.dkr.ecr.eu-north-1.amazonaws.com
         docker compose -f production.yml build 
         docker tag trial:latest 533315383542.dkr.ecr.eu-north-1.amazonaws.com/trial:latest

@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:533315383542:task-definition/TrialDefinition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:533315383542:task-definition/newprod:1",
     "containerDefinitions": [
         {
             "name": "trial",
-            "image": "533315383542.dkr.ecr.eu-north-1.amazonaws.com/trial",
+            "image": "533315383542.dkr.ecr.us-east-1.amazonaws.com/trial",
             "cpu": 0,
             "portMappings": [
                 {
@@ -24,7 +24,7 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/TrialDefinition",
+                    "awslogs-group": "/ecs/newprod",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
                 },
@@ -32,7 +32,7 @@
             }
         }
     ],
-    "family": "TrialDefinition",
+    "family": "newprod",
     "taskRoleArn": "arn:aws:iam::533315383542:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::533315383542:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
@@ -74,15 +74,15 @@
         "FARGATE"
     ],
     "requiresCompatibilities": [
-        "FARGATE"
+        "EC2"
     ],
-    "cpu": "2048",
-    "memory": "4096",
+    "cpu": "256",
+    "memory": "2048",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-11-27T03:59:05.951Z",
+    "registeredAt": "2023-11-27T12:51:02.064Z",
     "registeredBy": "arn:aws:iam::533315383542:root",
     "tags": []
 }
