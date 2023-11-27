@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:533315383542:task-definition/ProdDefinition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:533315383542:task-definition/TrialDefinition:1",
     "containerDefinitions": [
         {
             "name": "trial",
@@ -24,7 +24,7 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/ProdDefinition",
+                    "awslogs-group": "/ecs/TrialDefinition",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
                 },
@@ -32,7 +32,7 @@
             }
         }
     ],
-    "family": "ProdDefinition",
+    "family": "TrialDefinition",
     "taskRoleArn": "arn:aws:iam::533315383542:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::533315383542:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
@@ -74,7 +74,7 @@
         "FARGATE"
     ],
     "requiresCompatibilities": [
-        "EC2"
+        "FARGATE"
     ],
     "cpu": "2048",
     "memory": "4096",
@@ -82,7 +82,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-11-26T23:29:40.975Z",
+    "registeredAt": "2023-11-27T03:59:05.951Z",
     "registeredBy": "arn:aws:iam::533315383542:root",
     "tags": []
 }
