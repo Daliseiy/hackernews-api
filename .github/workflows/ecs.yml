@@ -70,11 +70,8 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        echo "${{ secrets.DJANGO_ENV }}" > .envs/.production/.django
-        echo "${{ secrets.DB_ENV }}" > .envs/.production/.postgres
+        echo "${{ secrets.DJANGO_ENV }}" > django.env
+        echo "${{ secrets.DB_ENV }}" > > postgres.env
         docker compose -f production.yml build .
         docker compose -f production.yml push
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
