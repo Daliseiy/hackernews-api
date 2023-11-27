@@ -73,7 +73,7 @@ jobs:
         mkdir -p .envs/.production
         echo "${{ secrets.DJANGO_ENV }}" > .envs/.production/.django
         echo "${{ secrets.DB_ENV }}" >  .envs/.production/.postgres
-        ls .envs
+        ls -a .envs
         aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 533315383542.dkr.ecr.eu-north-1.amazonaws.com
         docker compose -f production.yml build 
         docker tag trial:latest 533315383542.dkr.ecr.eu-north-1.amazonaws.com/trial:latest
