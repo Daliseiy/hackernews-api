@@ -13,7 +13,7 @@ services:
 
     image: newser_production_django
     depends_on:
-      - postgres
+      # - postgres
       - redis
     env_file:
       - django.env
