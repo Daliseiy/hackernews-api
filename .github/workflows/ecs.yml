@@ -71,7 +71,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         echo "${{ secrets.DJANGO_ENV }}" > django.env
-        echo "${{ secrets.DB_ENV }}" > > postgres.env
+        echo "${{ secrets.DB_ENV }}" >  postgres.env
         docker compose -f production.yml build .
         docker compose -f production.yml push
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
